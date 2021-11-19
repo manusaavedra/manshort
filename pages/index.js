@@ -4,7 +4,7 @@ import { server } from "../config"
 
 export default function Home() {
 
-  const [link, setLink] = useState("")
+  const [link, setLink] = useState(null)
   const inputRef = useRef()
 
   let redirectURL = server.concat(`/${link}`)
@@ -45,9 +45,11 @@ export default function Home() {
               Acortar Url
             </button>
           </div>
-          <a href={redirectURL}>
-            {redirectURL}
-          </a>
+          {
+            link && <a href={redirectURL}>
+              {redirectURL}
+            </a>
+          }
         </form>
       </main>
     </div>

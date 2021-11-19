@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   
   try {
     
-    const isExists = await prisma.url.findUnique({
+    const isExists = await prisma.shortLinks.findUnique({
       where: {
         url: url
       }
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     if (isExists)
       return res.status(200).send(isExists)
     
-    const data = await prisma.url.create({
+    const data = await prisma.shortLinks.create({
       data: {
         url: url,
         shortURL: shortURL

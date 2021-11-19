@@ -23,6 +23,7 @@ main {
 form {
   max-width: 480px;
   width: 100%;
+  padding: 20px
 }
 
 form div {

@@ -12,7 +12,7 @@ export async function getServerSideProps({params}) {
     const prisma = new PrismaClient()
     const {shortURL} = params
 
-    const data = await prisma.url.findUnique({
+    const data = await prisma.shortLinks.findUnique({
         where: {
             shortURL: shortURL
         }
