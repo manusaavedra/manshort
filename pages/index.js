@@ -1,10 +1,11 @@
 import Head from 'next/head'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { server } from "../config"
 
 export default function Home() {
 
   const [link, setLink] = useState(null)
+  const [loading, setLoading] = useState(false)
   const inputRef = useRef()
 
   let redirectURL = server.concat(`/${link}`)
@@ -13,9 +14,11 @@ export default function Home() {
 
     e.preventDefault()
 
-    if (!inputRef.current.value) return 
+    if (!inputRef.current.value) return
 
     let url = inputRef.current.value
+
+    setLoading(true)
 
     const res = await fetch('/api/shorturl', {
       method: 'POST',
@@ -25,9 +28,13 @@ export default function Home() {
       }
     })
 
+    setLoading(false)
+
     const data = await res.json()
     setLink(data.shortURL)
   }
+
+
 
   return (
     <div>
@@ -38,22 +45,56 @@ export default function Home() {
       </Head>
       <main>
         <form>
-          <div>
-            <label htmlFor="">Pega tu URL aquí</label>
+          <div className="form-control">
+            <label htmlFor="">Page your URL</label>
             <input autoFocus={true} ref={inputRef} type="text" placeholder="Pega una URL" />
           </div>
-          <div>
-            <button type="submit" onClick={handleShortUrl}>
-              Acortar Url
+          <div className="form-control">
+            <button className="primary" type="submit" onClick={handleShortUrl}>
+              Acortar Url {loading ? <ActivityIndicator /> : null}
             </button>
           </div>
           {
-            link && <a href={redirectURL}>
-              {redirectURL}
-            </a>
+            link &&
+            <div className="card">
+              <a href={redirectURL}>
+                {redirectURL}
+              </a>
+              <ButtonClipboard content={redirectURL} />
+            </div>
           }
         </form>
       </main>
-    </div>
+    </div >
+  )
+}
+
+function ActivityIndicator() {
+  return (
+    <div className="activityIndicator"></div>
+  )
+}
+
+function ButtonClipboard({ content }) {
+
+  const [copy, setCopy] = useState(false)
+
+  const handleClipboard = (e) => {
+
+    e.preventDefault()
+
+    navigator.clipboard.writeText(content)
+      .then(() => {
+        setCopy(true)
+      })
+      .catch(err => {
+        setCopy(false)
+      })
+  }
+
+  return (
+    <button className={`small ${copy ? 'primary' : undefined}`} onClick={handleClipboard} >
+      {copy ? 'Copied!' : 'Copy'}
+    </button>
   )
 }
