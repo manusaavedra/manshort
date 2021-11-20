@@ -27,8 +27,20 @@ export default async function handler(req, res) {
           }
         })
 
-        if (isExists)
-          return res.status(200).send(isExists)
+        if (isExists) {
+          
+          const data = await prisma.shortLinks.update({
+            where: {
+              url: url
+            },
+            data: {
+              url: url,
+              shortURL: shortURL
+            }
+          })
+
+          return res.status(200).send(data)
+        }
 
         const data = await prisma.shortLinks.create({
           data: {
