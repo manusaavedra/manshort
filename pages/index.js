@@ -13,6 +13,8 @@ export default function Home() {
 
     e.preventDefault()
 
+    if (!inputRef.current.value) return 
+
     let url = inputRef.current.value
 
     const res = await fetch('/api/shorturl', {
