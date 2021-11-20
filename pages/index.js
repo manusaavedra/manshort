@@ -65,6 +65,9 @@ export default function Home() {
           }
         </form>
       </main>
+      <footer>
+        💻 Hecho por <a href="https://github.com/manusaavedra">Manuel Saavedra ✌</a>
+      </footer>
     </div >
   )
 }
