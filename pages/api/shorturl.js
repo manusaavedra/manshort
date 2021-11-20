@@ -8,7 +8,14 @@ export default async function handler(req, res) {
   let method = req.method
 
   switch (method) {
+    case "GET": {
+
+      const links = await prisma.shortLinks.findMany()
+      res.status(200).send({links})
+      break;
+    }
     case "POST": {
+      
       let { url } = req.body
       let shortURL = Math.random().toString(36).substring(2, 8)
 
