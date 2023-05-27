@@ -8,7 +8,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const inputRef = useRef()
 
-  let redirectURL = `${process.env.HOST}/${link}`
+  let redirectURL = `${process.env.NEXT_PUBLIC_HOST}/${link}`
 
   const handleShortUrl = async (e) => {
 
