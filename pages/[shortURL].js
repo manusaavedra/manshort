@@ -25,6 +25,3 @@ export async function getServerSideProps({ params }) {
         redirect: { destination: shortlink.url }
     }
 }
-
-
-
