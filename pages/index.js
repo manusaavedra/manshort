@@ -40,7 +40,7 @@ export default function Home() {
       <main>
         <form onSubmit={handleShortUrl}>
           <div className="form-control">
-            <label htmlFor="">Page your URL</label>
+            <label htmlFor="">Paste your URL</label>
             <input autoFocus={true} ref={inputRef} type="text" name="url" placeholder="Pega una URL" />
           </div>
           <div className="form-control">
