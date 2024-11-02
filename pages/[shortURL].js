@@ -1,5 +1,5 @@
 
-import { PrismaClient } from "@prisma/client"
+import { ShorlinksModel } from "../database"
 
 export default function ShortIdPage() {
     return (
@@ -7,22 +7,22 @@ export default function ShortIdPage() {
     )
 }
 
-export async function getServerSideProps({params}) {
+export async function getServerSideProps({ params }) {
+    const { shorturl } = params
 
-    const prisma = new PrismaClient()
-    const {shortURL} = params
-
-    const data = await prisma.shortLinks.findUnique({
+    const data = await ShorlinksModel.findOne({
         where: {
-            shortURL: shortURL
+            shorturl
         }
     })
 
-    if (!data)
-        return { redirect: {destination: '/'}}
+    const shortlink = data.dataValues
+
+    if (!shortlink)
+        return { redirect: { destination: '/' } }
 
     return {
-        redirect: { destination: data.url}
+        redirect: { destination: shortlink.url }
     }
 }
 

@@ -1,60 +1,33 @@
-
-import { PrismaClient } from "@prisma/client"
-
-const prisma = new PrismaClient()
+import { ShorlinksModel } from "../../database"
 
 export default async function handler(req, res) {
-
   let method = req.method
 
   switch (method) {
     case "GET": {
-
-      const links = await prisma.shortLinks.findMany()
-      res.status(200).send({ links })
-      break;
+      const links = await ShorlinksModel.findAll()
+      return res.status(200).send({ links })
     }
     case "POST": {
-
-      let { url } = req.body
-      let shortURL = Math.random().toString(36).substring(2, 8)
+      const { url } = req.body
+      const shorturl = Math.random().toString(36).substring(2, 10)
 
       try {
-
-        const isExists = await prisma.shortLinks.findUnique({
+        const [link] = await ShorlinksModel.findCreateFind({
+          attributes: ["url", "shorturl"],
           where: {
-            url: url
+            url
+          },
+          defaults: {
+            shorturl
           }
         })
 
-        if (isExists) {
-
-          const data = await prisma.shortLinks.update({
-            where: {
-              url: url
-            },
-            data: {
-              url: url,
-              shortURL: shortURL
-            }
-          })
-
-          return res.status(200).send(data)
-        }
-
-        const data = await prisma.shortLinks.create({
-          data: {
-            url: url,
-            shortURL: shortURL,
-            fullShortUrl: `${process.env.NEXT_PUBLIC_HOST}/${shortURL}`
-          }
-        })
-
-        return res.status(200).send(data)
+        return res.status(200).json(link)
       } catch (error) {
-        return res.status(500).send(error)
+        console.log(error)
+        return res.status(500).json(error)
       }
-      break
     }
   }
 }

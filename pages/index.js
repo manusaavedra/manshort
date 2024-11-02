@@ -1,9 +1,7 @@
 import Head from 'next/head'
-import { useEffect, useRef, useState } from 'react'
-import { server } from "../config"
+import { useRef, useState } from 'react'
 
 export default function Home() {
-
   const [link, setLink] = useState(null)
   const [loading, setLoading] = useState(false)
   const inputRef = useRef()
@@ -14,15 +12,13 @@ export default function Home() {
 
     e.preventDefault()
 
-    if (!inputRef.current.value) return
-
-    let url = inputRef.current.value
+    const form = Object.fromEntries(new FormData(e.target))
 
     setLoading(true)
 
     const res = await fetch('/api/shorturl', {
       method: 'POST',
-      body: JSON.stringify({ url }),
+      body: JSON.stringify({ ...form }),
       headers: {
         "Content-type": "application/json"
       }
@@ -31,10 +27,8 @@ export default function Home() {
     setLoading(false)
 
     const data = await res.json()
-    setLink(data.shortURL)
+    setLink(data.shorturl)
   }
-
-
 
   return (
     <div>
@@ -44,13 +38,13 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <form>
+        <form onSubmit={handleShortUrl}>
           <div className="form-control">
             <label htmlFor="">Page your URL</label>
-            <input autoFocus={true} ref={inputRef} type="text" placeholder="Pega una URL" />
+            <input autoFocus={true} ref={inputRef} type="text" name="url" placeholder="Pega una URL" />
           </div>
           <div className="form-control">
-            <button className="primary" type="submit" onClick={handleShortUrl}>
+            <button className="primary" type="submit">
               Acortar Url {loading ? <ActivityIndicator /> : null}
             </button>
           </div>
