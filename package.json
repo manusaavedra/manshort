@@ -5,7 +5,6 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "install": "npm install",
     "lint": "next lint"
   },
   "dependencies": {
