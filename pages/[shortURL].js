@@ -16,10 +16,11 @@ export async function getServerSideProps({ params }) {
         }
     })
 
-    const shortlink = data.dataValues
-
-    if (!shortlink)
+    if (!data) {
         return { redirect: { destination: '/' } }
+    }
+
+    const shortlink = data.dataValues
 
     return {
         redirect: { destination: shortlink.url }
