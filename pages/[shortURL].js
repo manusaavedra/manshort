@@ -10,6 +10,10 @@ export default function ShortIdPage() {
 export async function getServerSideProps({ params }) {
     const { shorturl } = params
 
+    if (!shorturl) {
+        return { redirect: { destination: '/' } }
+    }
+
     const data = await ShorlinksModel.findOne({
         where: {
             shorturl
