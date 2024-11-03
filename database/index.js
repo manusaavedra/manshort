@@ -12,4 +12,3 @@ export const ShorlinksModel = sequelize.define("shortlinks", {
     shorturl: { type: DataTypes.STRING(20), unique: true },
     url: { type: DataTypes.STRING(2000), unique: true }
 })
-
