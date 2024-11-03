@@ -8,15 +8,15 @@ export default function ShortIdPage() {
 }
 
 export async function getServerSideProps({ params }) {
-    const { shorturl } = params
+    const { slug } = params
 
-    if (!shorturl) {
+    if (!slug) {
         return { redirect: { destination: '/' } }
     }
 
     const data = await ShorlinksModel.findOne({
         where: {
-            shorturl
+            shorturl: slug
         }
     })
 
