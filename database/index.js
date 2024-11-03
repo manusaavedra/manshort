@@ -1,10 +1,7 @@
 import { DataTypes, Sequelize } from "sequelize"
 
 export const sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialect: 'mysql',
-    dialectOptions: {
-        dialectModule: require('mysql2')
-    }
+    dialect: 'mysql'
 })
 
 export const ShorlinksModel = sequelize.define("shortlinks", {
